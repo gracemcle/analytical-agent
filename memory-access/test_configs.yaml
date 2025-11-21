@@ -1,0 +1,18 @@
+kernels:
+  axpy: |
+    __global__ void axpy_kernel(float a, float* x, float* y, int N) {
+      int tid = blockIdx.x * blockDim.x + threadIdx.x;
+      if (tid < N) {
+          y[tid] = a * x[tid] + y[tid];
+      }
+    }
+  stencil_no_opt : |
+    __global__ void stencil_2d(double* u, double* u_new, int n) {
+        int i = blockIdx.x * blockDim.x + threadIdx.x;
+        int j = blockIdx.y * blockDim.y + threadIdx.y;
+        if (i >= 1 && i < n-1 && j >= 1 && j < n-1) {
+          u_new[i * n + j] = 0.25 * (u[(i - 1) * n + j] + u[(i + 1) * n + j]) + 0.25 * (u[(i - 1) * n + j - 1] + u[(i - 1) * n + j + 1]) + 0.25 * (u[(i + 1) * n + j - 1] + u[(i + 1) * n + j + 1]) +  0.25 * (u[i * n + (j - 1)] + u[i * n + (j + 1)]) - u[i * n + j];
+        }
+      }
+  stencil_tiling: |
+    

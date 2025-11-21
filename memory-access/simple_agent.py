@@ -22,5 +22,8 @@ Runtime Prediction
 """
 
 import os
+import ollama
+from ollama import Client
 
 os.environ['NO_PROXY'] = 'zenith.ftpn.ornl.gov,localhost,127.0.0.1'
+client = Client(host='http://localhost:11434') # locally hosted ollama server excl
