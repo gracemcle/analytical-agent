@@ -27,3 +27,11 @@ from ollama import Client
 
 os.environ['NO_PROXY'] = 'zenith.ftpn.ornl.gov,localhost,127.0.0.1'
 client = Client(host='http://localhost:11434') # locally hosted ollama server excl
+
+stencil_code = None
+
+with fopen('gpu_code_examples/tile_stencil.cu', 'r') as f:
+    stencil_code = f.read()
+
+
+    
