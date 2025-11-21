@@ -116,6 +116,8 @@ SMs 114
 L2 Cache size 50MB
 """
 
+# Actual Runtime 0.038323 ms (after warmup, 10 iters)
+
 # Prompt:
 ```
 system_prompt = "You are a knowledgeable assistant with knowledge about H100 specs, CUDA code, and performance analysis"
@@ -136,8 +138,6 @@ prompt = f"""
 {question_1}
 
 Please provide a detailed runtime analysis considering memory bandwidth, compute throughput, and occupancy to justify the runtime prediction.
-"""
-```
 ## Response
 
 The kernel will finish in the order of **tens of micro‑seconds** on an NVIDIA H100 – roughly **20 µs** (≈ 15‑25 µs once launch overhead is added).  
@@ -301,8 +301,6 @@ t_total ≈ t_mem + t_launch ≈ 16‑20 µs + 3‑5 µs ≈ 20‑25 µs
 | Dominant factor | Global‑memory bandwidth, not compute or occupancy |
 
 Hence, **the runtime of the provided stencil kernel on an NVIDIA H100 is expected to be on the order of a few × 10⁻⁵ seconds (≈ 20 µs)**. If the code were rewritten to exploit the H100’s FP64 Tensor‑cores (e.g., via `mma`‑based fused‑multiply‑add), the compute side could be accelerated, but the memory‑bound nature would still keep the total time in the same ball‑park unless the operational intensity were increased (e.g., by processing multiple time steps per load).
-
-# Actual Runtime: 0.150400 ms
 
 # Response (20b)
 ## 1.  What the kernel actually does

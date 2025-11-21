@@ -63,7 +63,7 @@ specs_context = f"These are the specifications for an Nvidia H100 NVL GPU: {h100
 
 source_code_context = f"This is my CUDA code: {stencil_code}"
 
-question_1 = "What is the runtime of this code?"
+question_1 = "What is the runtime of the kernel?"
 
 prompt = f"""
 # GPU Specifications
@@ -77,7 +77,7 @@ prompt = f"""
 # Analysis Request
 {question_1}
 
-Please provide a detailed runtime analysis considering memory bandwidth, compute throughput, and occupancy to justify the runtime prediction.
+Please provide a summary kernel runtime predition, then a detailed runtime analysis considering memory access problems (L2 size, L1 size, bank conflicts, register size, occupancy) to justify the runtime prediction.
 """
 
 response = client.chat(

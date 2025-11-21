@@ -49,7 +49,7 @@ __global__ void stencil4pt(double* u, double* u_new, int nx, int ny){
 
 int main(int argc, char** argv){
     int nx = 6400;
-    int ny = 1000;
+    int ny = 10000;
     
     dim3 blockDim(BLOCKSIZE, BLOCKSIZE);
     dim3 gridDim((nx + blockDim.x - 1) / blockDim.x, 
@@ -67,7 +67,7 @@ int main(int argc, char** argv){
     for(int i = 0; i < nx; i++){
         for(int j = 0; j < ny; j++){
             if(i == 0 || j == 0 || i == nx-1 || j == ny-1){
-                h_u[i * ny + j] = 1.0;  // Fixed indexing
+                h_u[i * ny + j] = 1.0;
             } else {
                 h_u[i * ny + j] = 0.0;
             }
@@ -75,20 +75,8 @@ int main(int argc, char** argv){
     }
     
     cudaMemcpy(d_u, h_u, size, cudaMemcpyHostToDevice);
-    
-    cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-    cudaEventRecord(start);
+        
     stencil4pt<<<gridDim, blockDim>>>(d_u, d_unew, nx, ny);
-    cudaDeviceSynchronize();
-    cudaEventRecord(stop);
-    cudaEventSynchronize(stop);
-    
-    float milliseconds = 0.0;
-    cudaEventElapsedTime(&milliseconds, start, stop);
-
-    printf("%f\n", milliseconds);
 
     // Add error checking
     cudaError_t err = cudaGetLastError();
